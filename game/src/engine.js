@@ -149,7 +149,11 @@ function allStations() {
   return [
     ...PANTRY.map((crate) => ({ ...crate })),
     ...Object.values(STATIONS),
-    { kind: 'serve', ...SERVE, front: { x: 1118, y: FLOOR_TOP + 26 } },
+    // Serve front moved left of the window's centre (was 1118) and the
+    // trash front moved to the far right end of its counter (was 1166):
+    // the two interaction points are now 200 px apart, so standing at
+    // one can never put the other within nearest-station reach.
+    { kind: 'serve', ...SERVE, front: { x: 1040, y: FLOOR_TOP + 26 } },
   ];
 }
 
@@ -269,11 +273,12 @@ export function interact(state, forced) {
   }
 
   if (station.kind === 'trash') {
-    if (state.hands.length === 0 && state.plate.length === 0 && !state.chop) return 'deny';
+    // Trash takes ONLY what the chef holds in hand. The plate and the
+    // chopping board are never touched — a finished plate on the counter
+    // cannot be wiped out by one wrong step, and a half-chopped item
+    // stays on the board. A burnt item in hand is what gets trashed.
+    if (state.hands.length === 0) return 'deny';
     state.hands = [];
-    state.plate = [];
-    state.plateDish = null;
-    state.chop = null;
     return 'trash';
   }
 
@@ -331,7 +336,7 @@ export function promptFor(state) {
   if (station.kind === 'plate') {
     return state.hands.length > 0 ? 'E — Tata di piring' : 'Bawa bahan matang ke sini';
   }
-  if (station.kind === 'trash') return 'E — Buang tangan & piring';
+  if (station.kind === 'trash') return 'E — Buang yang di tangan';
   if (station.kind === 'serve') {
     return state.plateDish ? 'E — SAJIKAN! 🛎' : 'Selesaikan piring dulu, lalu sajikan di sini';
   }

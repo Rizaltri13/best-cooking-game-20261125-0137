@@ -11,8 +11,11 @@ import { SCREEN_OVER, SCREEN_PLAY, SCREEN_TITLE } from './render.js';
 function ticket(state, dishId, left) {
   const dish = DISHES.find((d) => d.id === dishId);
   state.orderSeq += 1;
+  // Ticket numbers stay continuous with what was already served: in a
+  // staged scene the board shows the next tickets after `served` dishes,
+  // so the first visible ticket is #served+1, not #1 again.
   return {
-    id: state.orderSeq,
+    id: state.served + state.orderSeq,
     dishId: dish.id,
     name: dish.name,
     short: dish.short,
@@ -74,9 +77,9 @@ export function stageShot(name, state) {
     ];
     state.nextOrderIn = 9;
     // Chef at the serve window with a finished Nasi Goreng on the plate.
-    state.chef.x = 1118;
+    state.chef.x = 1040;
     state.chef.y = 330;
-    state.chef.tx = 1118;
+    state.chef.tx = 1040;
     state.chef.ty = 330;
     state.plate = [
       { ing: 'rice', state: 'cooked' },
@@ -85,7 +88,7 @@ export function stageShot(name, state) {
     ];
     state.plateDish = dishForPlate(state.plate);
     state.floaters = [
-      { x: 1118, y: 288, text: '+148', t: 0.2, ttl: 1.4, colour: '#ffd76a' },
+      { x: 1040, y: 288, text: '+148', t: 0.2, ttl: 1.4, colour: '#ffd76a' },
     ];
     state.particles = [];
     for (let i = 0; i < 12; i += 1) {

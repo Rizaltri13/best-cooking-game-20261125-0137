@@ -122,7 +122,7 @@ export const STATIONS = {
   chop: { kind: 'chop', label: 'Talenan', x: 584, y: 178, w: 116, h: 82, front: { x: 642, y: FLOOR_TOP + 26 } },
   wok: { kind: 'wok', label: 'Wajan', x: 716, y: 178, w: 184, h: 82, front: { x: 808, y: FLOOR_TOP + 26 } },
   plate: { kind: 'plate', label: 'Piring Saji', x: 916, y: 178, w: 144, h: 82, front: { x: 988, y: FLOOR_TOP + 26 } },
-  trash: { kind: 'trash', label: 'Tong Sampah', x: 1076, y: 178, w: 180, h: 82, front: { x: 1166, y: FLOOR_TOP + 26 } },
+  trash: { kind: 'trash', label: 'Tong Sampah', x: 1076, y: 178, w: 180, h: 82, front: { x: 1240, y: FLOOR_TOP + 26 } },
 };
 
 /** Order board (tickets) and serve window, on the wall band. */

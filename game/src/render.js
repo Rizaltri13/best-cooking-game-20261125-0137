@@ -101,13 +101,86 @@ export function createRenderer(canvas) {
     for (let x = 90; x < FIELD.width; x += 180) {
       ctx.fillRect(x, 178, 3, FIELD.height - 178);
     }
-    // Rug in the middle of the floor.
+    // Rug in the middle of the floor: woven mat with a stitched border,
+    // woven stripes and a chili medallion at its centre.
     ctx.fillStyle = '#a34d2d';
     roundRect(ctx, 440, 470, 400, 130, 18);
     ctx.fill();
+    ctx.strokeStyle = '#7e3517';
+    ctx.lineWidth = 3;
+    roundRect(ctx, 440, 470, 400, 130, 18);
+    ctx.stroke();
     ctx.fillStyle = '#c96a3a';
     roundRect(ctx, 456, 486, 368, 98, 12);
     ctx.fill();
+    // Woven stripes.
+    ctx.strokeStyle = 'rgba(126,53,23,0.45)';
+    ctx.lineWidth = 2;
+    for (let sx = 478; sx <= 802; sx += 26) {
+      ctx.beginPath();
+      ctx.moveTo(sx, 494);
+      ctx.lineTo(sx, 576);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = '#7e3517';
+    ctx.lineWidth = 2;
+    roundRect(ctx, 456, 486, 368, 98, 12);
+    ctx.stroke();
+    // Centre medallion: gold diamond with a little red chili.
+    ctx.fillStyle = '#8a3d20';
+    ctx.beginPath();
+    ctx.moveTo(640, 500);
+    ctx.lineTo(675, 535);
+    ctx.lineTo(640, 570);
+    ctx.lineTo(605, 535);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#f2b705';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(640, 500);
+    ctx.lineTo(675, 535);
+    ctx.lineTo(640, 570);
+    ctx.lineTo(605, 535);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fillStyle = '#e23b2e';
+    ctx.beginPath();
+    ctx.ellipse(640, 538, 12, 5, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#3d9b4f';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(650, 534);
+    ctx.quadraticCurveTo(656, 528, 654, 524);
+    ctx.stroke();
+    // Small floor props beside the rug: a stack of bowls (left) and a
+    // clay pot with herbs (right).
+    ctx.fillStyle = '#fdfdfd';
+    for (let i = 0; i < 3; i += 1) {
+      ctx.beginPath();
+      ctx.ellipse(404, 622 - i * 7, 18, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#d8c49a';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(404, 622 - i * 7, 18, 6, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#b5502e';
+    ctx.beginPath();
+    ctx.moveTo(866, 636);
+    ctx.lineTo(894, 636);
+    ctx.lineTo(890, 660);
+    ctx.lineTo(870, 660);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#3d9b4f';
+    for (const [ox, oy, r] of [[-6, -6, 7], [5, -9, 8], [0, -14, 6]]) {
+      ctx.beginPath();
+      ctx.arc(880 + ox, 636 + oy, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
     // Rice sack and chili basket on the floor, for a lived-in warung.
     ctx.fillStyle = '#e8d9b0';
     ctx.beginPath();
@@ -182,7 +255,8 @@ export function createRenderer(canvas) {
       ctx.arc(ix, iy, 19, 0, Math.PI * 2);
       ctx.stroke();
     });
-    text(ctx, 'RING = STATUS', x + 196, y + 44, 10, PALETTE.muted);
+    // (The coloured rings around the ingredient icons already show
+    // each component's state — no legend text needed on the ticket.)
     // Patience bar.
     const frac = Math.max(0, order.left / order.max);
     ctx.fillStyle = '#e0cba8';
@@ -197,7 +271,8 @@ export function createRenderer(canvas) {
     ctx.fillStyle = PALETTE.woodDark;
     roundRect(ctx, BOARD.x - 6, BOARD.y - 6, BOARD.w + 12, BOARD.h + 12, 12);
     ctx.fill();
-    text(ctx, 'PESANAN', BOARD.x + 4, BOARD.y - 16, 13, '#ffe9b8');
+    // (No header text here: the board sits directly under the HUD bar,
+    // so a label above it would be painted over and never seen.)
     if (state.orders.length === 0) {
       text(ctx, 'Belum ada pesanan — siapkan dapurmu!', BOARD.x + 20, BOARD.y + 44, 17, '#ffe9b8');
     }
